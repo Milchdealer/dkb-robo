@@ -3,7 +3,6 @@
 """ Regular scraping of DKB documents """
 import os
 import argparse
-import csv
 import json
 from datetime import datetime, timedelta
 from dkb_robo import DKBRobo
@@ -16,10 +15,8 @@ def write_transactions(dkb, out_folder, date_from, date_to):
     print("Getting Transactions from %s to %s" % (date_from, date_to))
 
     transaction_list = dkb.get_transactions(link, _type, date_from, date_to)
-    with open(os.path.join(out_folder, "transactions.csv"), "w", newline="") as f:
-        writer = csv.writer(f, delimiter=";", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        for transaction in transaction_list:
-            writer.writerow(transaction)
+    with open(os.path.join(out_folder, "transactions.json"), "w", newline="") as f:
+        json.dump(transaction_list, f, ensure_ascii=False)
 
 
 def write_postbox(dkb, out_folder):
@@ -63,7 +60,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     date_to = datetime.now()
-    date_from = date_to - timedelta(days=100)
+    date_from = date_to - timedelta(days=90)
     out_folder = os.path.join(args.out_folder, date_to.strftime("%Y-%m-%d"))
     os.makedirs(out_folder, exist_ok=True)
 
