@@ -57,6 +57,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--out_folder", "-o", type=str, help="Where to store the results"
     )
+    parser.add_argument(
+        "--max_tries", "-m", type=int, default=2, "How many login attempts to do")
     args = parser.parse_args()
 
     date_to = datetime.now()
@@ -66,8 +68,16 @@ if __name__ == "__main__":
 
     with open(args.secret_file) as f:
         user, password = f.read().split(":")
-    DKB = DKBRobo()
+
+    tries = 0
     with DKBRobo(user.strip(), password.strip()) as dkb:
+        while not dkb.account_dic and tries < args.max_tries:
+            tries = tries + 1
+            dkb.login()
+        if not dkb.account_dic:
+            print("Failed to login to account")
+            exit(1)
+
         write_transactions(
             dkb,
             out_folder,
