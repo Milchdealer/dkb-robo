@@ -58,7 +58,8 @@ if __name__ == "__main__":
         "--out_folder", "-o", type=str, help="Where to store the results"
     )
     parser.add_argument(
-        "--max_tries", "-m", type=int, default=2, "How many login attempts to do")
+        "--max_tries", "-m", type=int, default=2, help="How many login attempts to do"
+    )
     args = parser.parse_args()
 
     date_to = datetime.now()
