@@ -20,7 +20,7 @@ def write_transactions(dkb, out_folder, date_from, date_to):
 
 
 def write_postbox(dkb, out_folder):
-    postbox_dic = dkb.scan_postbox(out_folder, False)
+    postbox_dic = dkb.scan_postbox(out_folder, True)
     with open(os.path.join(out_folder, "postbox.json"), "w") as f:
         json.dump(postbox_dic, f, ensure_ascii=False)
 
